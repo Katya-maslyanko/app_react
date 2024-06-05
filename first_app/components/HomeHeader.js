@@ -2,8 +2,13 @@
 import React from "react";
 import { View, Text, Image, TextInput } from "react-native";
 import { COLORS, FONTS, SIZES, assets } from "../constants";
+import { useNavigation } from "@react-navigation/native";
+import { TouchableOpacity, StyleSheet } from "react-native";
+import MediaUpload from "../templates/pages/MediaUpload";
 
 const HomeHeader = ({ onSearch }) => {
+  const navigation = useNavigation();
+
   return (
     <View
       style={{
@@ -42,6 +47,20 @@ const HomeHeader = ({ onSearch }) => {
             Просмотр постов
           </Text>
         </View>
+        <TouchableOpacity
+        style={{
+          backgroundColor: COLORS.gray,
+          padding: SIZES.small,
+          borderRadius: SIZES.font,
+          alignItems: "center",
+          marginTop: SIZES.base,
+        }}
+        onPress={() => navigation.navigate("MediaUpload")}
+      >
+        <Text style={{ fontFamily: FONTS.bold, color: COLORS.white }}>
+          Галерея медиа
+        </Text>
+      </TouchableOpacity>
 
         {/* Контейнер для аватара пользователя */}
         <View style={{ width: 45, height: 45 }}>

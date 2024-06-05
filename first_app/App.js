@@ -18,6 +18,7 @@ const theme = {
 // Импортируем компоненты экранов
 import Home from "./templates/pages/Home";
 import Details from "./templates/pages/Details";
+import MediaUpload from "./templates/pages/MediaUpload";
 
 // Определяем основной компонент App
 const App = () => {
@@ -36,6 +37,8 @@ const App = () => {
         <Stack.Screen name="Home" component={Home} />
         {/* Регистрируем экран Details и задаем ему имя "Details" */}
         <Stack.Screen name="Details" component={Details} />
+        {/* Регистрируем экран MediaUpload и задаем ему имя "MediaUpload" */}
+        <Stack.Screen name="MediaUpload" component={MediaUpload} />
       </Stack.Navigator>
     </NavigationContainer>
   );
