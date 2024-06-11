@@ -5,8 +5,9 @@ import { COLORS, FONTS, SIZES, assets } from "../constants";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity, StyleSheet } from "react-native";
 import MediaUpload from "../templates/pages/MediaUpload";
+import { Entypo } from "@expo/vector-icons";
 
-const HomeHeader = ({ onSearch }) => {
+const HomeHeader = ({ onSearch, value }) => {
   const navigation = useNavigation();
 
   return (
@@ -93,9 +94,19 @@ const HomeHeader = ({ onSearch }) => {
           />
           <TextInput
             placeholder="Поиск постов"
-            style={{ flex: 1 }}
-            onChangeText={onSearch}
+            placeholderTextColor={COLORS.white}
+            style={{
+              flex: 1,
+              color: COLORS.white, // Добавлен белый цвет текста
+            }}
+            onChangeText={(text) => onSearch(text)}
+            value={value}
           />
+          {value.length > 0 && (
+            <TouchableOpacity onPress={() => onSearch("")}>
+              <Entypo name="cross" size={24} color={COLORS.white} />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </View>

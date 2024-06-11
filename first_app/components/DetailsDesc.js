@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
-import { Title } from "./SubInfo"; // Импортируем компонент Title из файла SubInfo
-import { COLORS, SIZES, FONTS } from "../constants"; // Импортируем константы из файла constants
+import { View, Text, TouchableOpacity } from "react-native";
+import { Title } from "./SubInfo";
+import { COLORS, SIZES, FONTS } from "../constants";
 
 const DetailsDesc = ({ data }) => {
-  // Используем хук useState для управления состоянием текста описания и флага readMore
-  const [text, setText] = useState(data.description.slice(0, 100)); // Изначально отображаем первые 100 символов описания
-  const [readMore, setReadMore] = useState(false); // Изначально флаг readMore установлен в false
+  const [readMore, setReadMore] = useState(false);
+
+  const toggleReadMore = () => {
+    setReadMore(!readMore);
+  };
 
   return (
     <>
@@ -18,7 +20,6 @@ const DetailsDesc = ({ data }) => {
           alignItems: "center",
         }}
       >
-        {/* Отображаем компонент Title с данными из props */}
         <Title
           title={data.name}
           subTitle={data.creator}
@@ -45,16 +46,33 @@ const DetailsDesc = ({ data }) => {
           <Text
             style={{
               color: COLORS.secondary,
-              fontSize: SIZES.small,
+              fontSize: SIZES.medium,
               fontFamily: FONTS.regular,
               lineHeight: SIZES.large,
             }}
           >
-            {/* Отображаем текст описания */}
-            {text}
-            {/* Если readMore не установлен, отображаем многоточие (...) */}
-            {!readMore && "..."}
+            {readMore
+              ? data.description
+              : `${data.description.slice(0, 100)}...`}
           </Text>
+          {data.description.length > 100 && (
+            <TouchableOpacity
+              onPress={toggleReadMore}
+              style={{
+                marginTop: SIZES.base,
+              }}
+            >
+              <Text
+                style={{
+                  color: COLORS.primary,
+                  fontSize: SIZES.small,
+                  fontFamily: FONTS.semiBold,
+                }}
+              >
+                {readMore ? "Свернуть" : "Читать далее"}
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </>

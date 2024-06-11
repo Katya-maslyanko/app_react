@@ -1,33 +1,115 @@
 import React from "react";
-import { View, Text, SafeAreaView, Image, StatusBar, FlatList } from "react-native";
-import { COLORS, SIZES, assets, SHADOWS } from "../../constants";
+import { View, Text, SafeAreaView, Image, StatusBar, FlatList,  Platform, StyleSheet} from "react-native";
+import { COLORS, SIZES, assets, FONTS } from "../../constants";
 import { CircleButton, SubInfo, DetailsDesc, FocusedStatusBar } from "../../components";
 import { useNavigation } from "@react-navigation/native";
+// Импортируем необходимые модули
+import Constants from 'expo-constants';
 
 // Компонент заголовка экрана деталей и кнопкк назад в Home
-const DetailsHeader = ({ data, navigation }) => (
-  <View style={{ width: "100%", height: 373 }}>
-    <Image
-      source={data.image}
-      resizeMode="cover"
-      style={{ width: "100%", height: "100%" }}
-    />
+const DetailsHeader = ({ data, navigation }) => {
+  // Определяем стили в зависимости от платформы
+  const styles = Platform.select({
+    ios: {
+      container: {
+        width: "100%",
+        height: 420, // Больший размер для iOS
+      },
+      image: {
+        width: "100%",
+        height: "100%",
+      },
+    },
+    android: {
+      container: {
+        width: "100%",
+        height: 373, // Меньший размер для Android
+      },
+      image: {
+        width: "100%",
+        height: "100%",
+      },
+    },
+  });
 
-    <CircleButton
-      imgUrl={assets.left}
-      handlePress={() => navigation.navigate("Home")}
-      left={15}
-      top={StatusBar.currentHeight + 10}
-    />
-  </View>
-);
+  return (
+    <View style={styles.container}>
+      <Image source={data.image} resizeMode="cover" style={styles.image} />
+
+      <CircleButton
+        imgUrl={assets.left}
+        handlePress={() => navigation.navigate("Home")}
+        left={15}
+        top={StatusBar.currentHeight + 10}
+      />
+    </View>
+  );
+};
+
+// Компонент, показывающий платформу
+const AppPlatform = () => {
+  const { platform } = Constants;
+
+  return (
+    <View style={styles.platformContainer}>
+      <Text style={styles.platformText}>
+        {platform.ios ? 'iOS' : 'Android'}
+      </Text>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  platformContainer: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: COLORS.white,
+    paddingVertical: SIZES.small,
+    paddingHorizontal: SIZES.font,
+    borderRadius: SIZES.font,
+    shadowColor: COLORS.gray,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  platformText: {
+    fontFamily: FONTS.regular,
+    fontSize: SIZES.small,
+    color: COLORS.primary,
+  },
+});
+
 
 // Главный компонент экрана деталей
 const Details = ({ route, navigation }) => {
   const { data } = route.params;
+  const styles = Platform.select({
+    ios: StyleSheet.create({
+      container: {
+        flex: 1,
+      },
+      contentContainer: {
+        paddingBottom: SIZES.extraLarge * 4, // Больший отступ снизу для iOS
+      },
+    }),
+    android: StyleSheet.create({
+      container: {
+        flex: 1,
+      },
+      contentContainer: {
+        paddingBottom: SIZES.extraLarge * 3, // Меньший отступ снизу для Android
+      },
+    }),
+  });
+
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={styles.container}>
       {/* Компонент строки состояния, адаптированной для навигации */}
       <FocusedStatusBar
         barStyle="dark-content"
@@ -40,9 +122,7 @@ const Details = ({ route, navigation }) => {
         data={data.bids}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingBottom: SIZES.extraLarge * 3,
-        }}
+        contentContainerStyle={styles.contentContainer}
         ListHeaderComponent={() => (
           <React.Fragment>
             {/* Вызов компонента заголовка */}
@@ -56,6 +136,7 @@ const Details = ({ route, navigation }) => {
           </React.Fragment>
         )}
       />
+    <AppPlatform />
     </SafeAreaView>
   );
 };

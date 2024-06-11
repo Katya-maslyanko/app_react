@@ -1,46 +1,60 @@
 // Импортируем необходимые модули и компоненты
 import React, { useState } from "react";
-import { View, SafeAreaView, FlatList, Text } from "react-native";
+import { View, SafeAreaView, FlatList, Platform, TouchableOpacity } from "react-native";
 import { Card, HomeHeader, FocusedStatusBar } from "../../components";
-import { COLORS, PostData } from "../../constants";
-
+import { COLORS, PostData, SIZES, SHADOWS } from "../../constants";
+  
 const Home = () => {
-    // Определяем состояние nftData и функцию setNftData для управления данными Post
-    const [postData, setPostData] = useState(PostData);
+    // Определяем состояние PostData и функцию sePostData для управления данными Post
+    const [searchText, setSearchText] = useState("");
+    const [filteredPosts, setFilteredPosts] = useState(PostData);    
 
     // Функция обработки поиска
     const handleSearch = (value) => {
-        // Если поисковая строка пустая, восстанавливаем исходные данные
-        if (value.length === 0) {
-            setPostData(PostData);
-        }
-
-        // Фильтруем данные по названию , учитывая регистр
-        const filteredData = PostData.filter((item) =>
-            item.name.toLowerCase().includes(value.toLowerCase())
+        setSearchText(value);
+        const filtered = PostData.filter((post) =>
+          post.name && post.name.toLowerCase().includes(value.toLowerCase())
         );
+        setFilteredPosts(filtered);
+      };               
 
-        // Если фильтрованные данные пусты, восстанавливаем исходные данные, иначе обновляем состояние
-        if (filteredData.length === 0) {
-            setPostData(PostData);
-        } else {
-            setPostData(filteredData);
-        }
-    };
+    // Определяем стили в зависимости от платформы
+    const styles = Platform.select({
+        ios: {
+        container: {
+            flex: 1,
+            backgroundColor: COLORS.primary,
+        },
+        headerContainer: {
+            zIndex: 0,
+            backgroundColor: COLORS.primary,
+        },
+        },
+        android: {
+        container: {
+            flex: 1,
+            backgroundColor: COLORS.secondary,
+        },
+        headerContainer: {
+            zIndex: 0,
+            backgroundColor: COLORS.secondary,
+        },
+        },
+    });
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={styles.container}>
             {/* Настраиваем цвет строки состояния */}
             <FocusedStatusBar backgroundColor={COLORS.primary} />
-            <View style={{ flex: 1, backgroundColor: COLORS.primary }}>
-                <View style={{ zIndex: 0, backgroundColor: COLORS.primary }}>
+            <View style={styles.container}>
+                <View style={styles.headerContainer}>
                     {/* Отображаем списком данные Post с помощью FlatList */}
                     <FlatList
-                        data={PostData}
-                        renderItem={({ item }) => <Card data={item} />}
-                        keyExtractor={(item) => item.id}
-                        showsVerticalScrollIndicator={false}
-                        ListHeaderComponent={<HomeHeader onSearch={handleSearch} />}
+                    data={filteredPosts}
+                    renderItem={({ item }) => <Card data={item} />}
+                    keyExtractor={(item) => item.id}
+                    showsVerticalScrollIndicator={false}
+                    ListHeaderComponent={<HomeHeader onSearch={handleSearch} value={searchText} />}
                     />
                 </View>
 
