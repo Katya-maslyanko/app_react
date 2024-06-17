@@ -88,6 +88,8 @@ const MediaUpload = () => {
       paddingHorizontal: SIZES.font,
       marginBottom: SIZES.font,
       marginTop: 50,
+      marginLeft: 15,
+      marginRight: 15,
     },
     addMediaButton: {
       backgroundColor: COLORS.gray,
@@ -120,12 +122,12 @@ const MediaUpload = () => {
       alignItems: "center",
     },
     mediaGrid: {
-      padding: SIZES.base,
+      padding: SIZES.small,
     },
     mediaItem: {
       width: '33%',
       height: Platform.OS === "ios" ? 180 : 150,
-      padding: SIZES.small,
+      padding: 6,
     },
     media: {
       width: "100%",
