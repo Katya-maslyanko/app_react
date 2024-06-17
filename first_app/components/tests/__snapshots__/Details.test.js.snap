@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Details должен правильно отображать элементы FlatList 1`] = `
+{
+  "id": "1",
+  "price": 100,
+}
+`;
+
+exports[`Details должен правильно отображать элементы FlatList 2`] = `
+{
+  "id": "2",
+  "price": 200,
+}
+`;

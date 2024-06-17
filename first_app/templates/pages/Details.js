@@ -13,7 +13,7 @@ const DetailsHeader = ({ data, navigation }) => {
     ios: {
       container: {
         width: "100%",
-        height: 420, // Больший размер для iOS
+        height: 420,
       },
       image: {
         width: "100%",
@@ -23,7 +23,7 @@ const DetailsHeader = ({ data, navigation }) => {
     android: {
       container: {
         width: "100%",
-        height: 373, // Меньший размер для Android
+        height: 373,
       },
       image: {
         width: "100%",
@@ -48,12 +48,10 @@ const DetailsHeader = ({ data, navigation }) => {
 
 // Компонент, показывающий платформу
 const AppPlatform = () => {
-  const { platform } = Constants;
-
   return (
     <View style={styles.platformContainer}>
       <Text style={styles.platformText}>
-        {platform.ios ? 'iOS' : 'Android'}
+        {Platform.OS === 'ios' ? 'iOS' : 'Android'}
       </Text>
     </View>
   );
@@ -141,4 +139,6 @@ const Details = ({ route, navigation }) => {
   );
 };
 
+
+export { DetailsHeader, AppPlatform };
 export default Details;
